@@ -3,5 +3,26 @@
 {% block body %}
     <h2>Active Listings</h2>
 
-    TODO
+    {% for listing in listings %}
+        {% if listing.active %}
+            <div onclick="location.href='/listing/{{ listing.id }}';" class="border border-2 container"
+            style="cursor: pointer;">
+                <image src="{{ listing.picture }}" width=50% height=50%></image>
+               
+                <h3>{{listing.title}}</h3>
+                {% if listing.current_bid %}
+                    <h4>Current bid : {{listing.current_bid}}</h4>
+                {% else %}
+                    <h4>Starting bid : {{listing.start_bid}}</h4>
+                {% endif %}
+                
+                <h5>Category : {{listing.category}}</h5>
+                <h5>Description : {{listing.description}}</h5>
+                <p>Listing Created on : {{listing.date}}</p>
+
+
+            </div>
+        {% endif %}
+    {% endfor %} 
+    
 {% endblock %}
