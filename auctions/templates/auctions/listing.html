@@ -1,0 +1,77 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Listing: {{list.title}}</h2>
+    <image src="{{ list.picture }}" width=30% height=30%></image>
+    {% if list.watch %}
+        <form action="{% url 'watchlist' list.id %}" method="post">
+            {% csrf_token %}
+            <input class="btn btn-primary btn-sm" type="submit" type="submit" value="Remove from Watchlist">
+        </form>
+    {% else %}
+        <form action="{% url 'watchlist' list.id %}" method="post">
+            {% csrf_token %}
+            <input class="btn btn-primary btn-sm" type="submit" type="submit" value="Add to Watchlist">
+        </form>
+    {% endif %}
+    {% if list.active %}
+        {% if list.current_bid >= list.start_bid %}
+            <h4>Current bid : ${{list.current_bid}}</h4>
+        {% else %}
+            <h4>Starting bid : ${{list.start_bid}}</h4>
+        {% endif %}
+
+        {% if error_messages %}
+            Please place the correct bid.
+        {% endif %}
+
+
+        
+            <form action="{% url 'bid_listing' list.id %}" method="post">
+                {% csrf_token %}
+                <br>
+                <h6>Bid: </h6>
+                {{form.place_bid}}
+                <input class="btn btn-primary btn-sm" type="submit", value="Place Bid" name="update_bid">
+            </form>
+            <br>
+            <p>Current leading bid by : {{list.buyer}}</p>
+
+        {% ifequal user list.lister %}
+            <form action="{% url 'deletelist' list.id %}" method="post">
+                {% csrf_token %}
+                <input class="btn btn-warning btn-primary btn-sm" type="submit" value="Delete Listing">
+            </form>
+
+
+        {% endifequal %}
+    {% else %}
+    {% ifequal user list.buyer %}
+        <h5>Congratz, you have won! Please email the seller for shipping and payment method!</h5>
+    {% endifequal %}
+        <p>This listing is no longer available (Please refresh to home page)</p>
+    {% endif %}    
+    <h4>Details</h4>
+    <ul>
+        <li>Creator of the bid : {{list.lister}}</li>
+        <li>Category : {{list.category}}</li>
+    </ul>
+    <h4>Description</h4>
+    {{list.description}}
+    <h4>Comments:</h4>
+    {% for comment in comments %}
+    <hr>
+    <p>{{comment.content}}</p>
+    <p>by {{comment.user}} <br> {{comment.datetime}} </p>
+    <hr>
+    {% endfor %}
+    <form action="{% url 'bid_listing' list.id %}" method="post">
+        {% csrf_token %}
+        {{comment_form.comment}}
+        <br>
+        <input class="btn btn-primary btn-sm" type="submit" value="Comment" name="update_comment">
+    </form>
+
+    
+
+{% endblock %}

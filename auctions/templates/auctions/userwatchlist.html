@@ -1,0 +1,28 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+    <h2>Your watchlist</h2>
+    {% for userwatchlist in userwatchlists %}
+            <div onclick="location.href='/listing/{{ userwatchlist.id }}';" class="border border-2 container"
+            style="cursor: pointer;">
+                <image src="{{ userwatchlist.picture }}" width=50% height=50%></image>
+               
+                <h3>{{userwatchlist.title}}</h3>
+                {% if userwatchlist.current_bid %}
+                    <h4>Current bid : {{userwatchlist.current_bid}}</h4>
+                {% else %}
+                    <h4>Starting bid : {{userwatchlist.start_bid}}</h4>
+                {% endif %}
+                
+                <h5>Category : {{userwatchlist.category}}</h5>
+                <h5>Description : {{userwatchlist.description}}</h5>
+                <p>{{userwatchlist.date}}</p>
+
+
+            </div>
+    {% endfor %} 
+
+    
+
+{% endblock %}

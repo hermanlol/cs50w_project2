@@ -1,0 +1,35 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+    <h2>Creating a new listing</h2>
+
+    {% if success_create %}
+        <div> You have successfully create a listing </div>
+
+    {% endif %}
+
+    {% if unsuccess_create %}
+        <div> You have unsuccessfully create a listing ! Please try again</div>
+    {% endif %}
+
+    <form action="{% url 'create' %}" method="post">
+        {% csrf_token %}
+        <h6>Title: </h6>
+        {{form.title}}
+        <h6>Starting bid: </h6> 
+        {{form.start_bid}}
+        <h6>Description: </h6> 
+        {{form.description}}
+        <h6>Category: </h6> 
+        {{form.category}}
+        <h6>Picture URL: </h6>
+        {{form.picture}}
+
+        <br>
+        <input type="submit">
+    </form>
+
+    
+
+{% endblock %}
